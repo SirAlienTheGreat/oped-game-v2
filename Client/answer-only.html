@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>hello-wasm example</title>
+
+    <style>
+      button {
+        width: 80%;
+        height: 6vh;
+        font-size: 2.3vh;
+        background-color: rgb(0, 0, 80);
+        color: white;
+        border-color: aqua;
+        margin-bottom: 1vw;
+      }
+
+      button:hover {
+        background-color: rgb(0, 0, 120);
+      }
+
+      p {
+        font-size: 2vh;
+      }
+      body {
+        margin: 0vw;
+        background-color: black;
+        color: lightgray;
+      }
+      .rightDiv:after {
+          content: "";
+          display: table;
+          clear: both;
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <script type="module">
+      import * as webm from"./pkg/webassembly_oped.js";
+
+      const ip = prompt("Enter Server IP Address and port");
+      const username = prompt("Enter Username");
+
+      var initialSocket = new WebSocket("ws://"+ip);
+      initialSocket.onopen = function(){
+        initialSocket.send("USR "+username);
+      }
+
+      initialSocket.onmessage = function (evt) {
+        webm.message(evt.data);
+      };
+      initialSocket.onclose = function() { };
+
+
+      console.log(webm);
+      webm.default()
+        .then(() => {
+          webm.play_video("https://animethemes.moe/video/saekano-OP1.webm");
+        });
+      
+      
+      var videoplayer = document.getElementById("videoplayer");
+
+      // Assign functions to buttons
+      var button = document.getElementById("newVideo");
+      button.addEventListener("click", () => {
+        initialSocket.send("FIN");
+        videoplayer.play();
+      });
+
+      var button = document.getElementById("hideVideo");
+      button.addEventListener("click", () => {
+        webm.hide_video();
+      });
+
+      var button = document.getElementById("showVideo");
+      button.addEventListener("click", () => {
+        webm.show_video();
+      });
+
+      var button = document.getElementById("togglePlayingVideo");
+      button.addEventListener("click", () => {
+        if (videoplayer.paused) {
+          // Play the video
+          videoplayer.play();
+        } else {
+          // Pause the video
+          videoplayer.pause();
+        }
+
+      });
+
+      var button = document.getElementById("submit");
+      var input = document.getElementById("answer_in");
+      button.addEventListener("click", () => {
+        if (input.value != ""){
+          initialSocket.send("ANS " + input.value);
+        }
+        input.value = "";
+
+      });
+
+      
+          
+
+    </script>
+
+    
+    <!-- Left panel-->
+    <div style="width:20vw; float:left; margin-top: 2vh; margin-top: 2vw; margin-left: 0vw; margin-right: 0vw; text-align: center;">
+      <button id="newVideo">Next</button><br>
+      <button id="hideVideo">Hide Video</button><br>
+      <button id="showVideo">Show Video</button><br>
+      <button id="togglePlayingVideo">Play/Pause Video</button><br>      
+    </div>
+
+    <!-- Right panel-->
+    <div class="rightDiv" style="width:79.0vw; height: 33.75vh; float:left; margin-top: 2vw;
+    margin-left: 0vw; margin-right: 0vw; overflow: scroll;"
+          id="rightDiv">
+      <p>Log will go here</p>
+    </div>
+
+    <!-- Lower panel-->
+    <div style="width:100vw; height: 20vh; position: fixed; top:35vh; text-align: center;">
+      <input style="float:none; height:100%; width:100%; padding: 0vw; border: 0vw;
+                    background-color: #00004e; font-size: 12vw; text-align: center; color: orangered;"
+                    id="answer_in" onkeyup="if(event.keyCode===13){submit.click()}">
+      <button style="float:none; height:100%; width:100%; padding: 0vw; border: 0vw; font-size: 12vw;" style="float:none" id="submit">Submit</button><br>
+    </div>
+  </body>
+</html>
