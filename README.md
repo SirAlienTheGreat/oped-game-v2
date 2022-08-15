@@ -1,6 +1,6 @@
 <h1>oped-game-v2</h1>
-<subtitle>A self-hosted animemusizquiz clone</subtitle>
-
+<subtitle>A very WIP self-hosted animemusizquiz clone</subtitle>
+<img src="Screenshot.png">
 <h1>Installation</h1>
 <h2>Client</h2>
 <ol>
