@@ -33,7 +33,7 @@
 <ol>
   <li>Install Rust following <a href="https://www.rust-lang.org/learn/get-started">this guide</a></li>
   <li>Clone this repo with <code>git clone https://github.com/SirAlienTheGreat/oped-game-v2</code></li>
-  <li<code>cd oped-game-v2/server</code>></li>
+  <li><code>cd oped-game-v2/server</code></li>
   <li><code>cargo build --release</code></li>
   <li>Your files will be in <code>target/release</code></li>
 </ol>
